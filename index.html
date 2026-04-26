@@ -22,7 +22,7 @@
                 radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
             background-repeat: repeat; background-size: 250px 250px;
-            animation: starsMove 100s linear infinite; opacity: 0.5;
+            animation: starsMove 65s linear infinite; opacity: 0.5;
         }
 
         @keyframes starsMove { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
@@ -41,6 +41,48 @@
 
         .ui-wrapper.active { opacity: 1; transform: scale(1); }
 
+        /* GATE DİZAYN YENİLƏNMƏSİ */
+        #gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #0d1117 0%, #000 100%);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 2s;
+            overflow: hidden;
+        }
+
+        /* Gate daxilindəki özəl ulduzlar */
+        #gate::before {
+            content: "";
+            position: absolute; width: 200%; height: 200%;
+            background-image: 
+                radial-gradient(1px 1px at 10% 10%, #fff, transparent),
+                radial-gradient(1px 1px at 20% 50%, #fff, transparent),
+                radial-gradient(2px 2px at 40% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 20%, #fff, transparent),
+                radial-gradient(2px 2px at 80% 60%, #fff, transparent);
+            background-size: 300px 300px;
+            animation: gateStars 90s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes gateStars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-50%); }
+        }
+
+        #gate p { 
+            position: relative; z-index: 1001;
+            letter-spacing: 10px; font-size: 0.75rem; color: #fff; 
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            animation: blinkGlow 3s ease-in-out infinite; 
+            font-family: 'Cinzel', serif;
+        }
+
+        @keyframes blinkGlow { 
+            0%, 100% { opacity: 0.3; transform: scale(0.98); } 
+            50% { opacity: 1; transform: scale(1.02); } 
+        }
+
         .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; }
         
         .profile-container { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
@@ -48,7 +90,6 @@
         .profile-img { 
             width: 55px; height: 55px; border-radius: 50%; 
             border: 1px solid rgba(255, 255, 255, 0.3); object-fit: cover;
-            /* Yeni şəklin linki buraya əlavə edildi */
             background: url('https://i.ibb.co/mCMN0HHB/MG-0363.jpg') center/cover;
         }
 
@@ -75,15 +116,6 @@
         .icon-box img { width: 35px; height: 35px; }
 
         .track-name { margin-top: 60px; font-size: 0.6rem; letter-spacing: 4px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; }
-
-        #gate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 1000; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 2s;
-        }
-
-        #gate p { letter-spacing: 6px; font-size: 0.7rem; color: #666; animation: blink 2s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
