@@ -30,6 +30,12 @@
         .visitor-counter {
             position: fixed; top: 20px; right: 20px; font-size: 0.55rem;
             letter-spacing: 2px; color: rgba(255, 255, 255, 0.3); z-index: 100;
+            background: rgba(255,255,255,0.03);
+            padding: 6px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 0.5px solid rgba(255,255,255,0.05);
+            font-family: 'Cinzel', serif;
         }
 
         .ui-wrapper {
@@ -41,87 +47,505 @@
 
         .ui-wrapper.active { opacity: 1; transform: scale(1); }
 
-        /* GATE DİZAYN YENİLƏNMƏSİ */
+        /* ========== EVRENSEL GATE: KARADELİK PORTALI ========== */
         #gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #0d1117 0%, #000 100%);
+            background: #000;
             z-index: 1000; display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: 2s;
             overflow: hidden;
         }
 
-        /* Gate daxilindəki özəl ulduzlar */
+        /* Karadelik akresyon diski */
         #gate::before {
             content: "";
-            position: absolute; width: 200%; height: 200%;
-            background-image: 
-                radial-gradient(1px 1px at 10% 10%, #fff, transparent),
-                radial-gradient(1px 1px at 20% 50%, #fff, transparent),
-                radial-gradient(2px 2px at 40% 80%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 20%, #fff, transparent),
-                radial-gradient(2px 2px at 80% 60%, #fff, transparent);
-            background-size: 300px 300px;
-            animation: gateStars 90s linear infinite;
-            opacity: 0.3;
+            position: absolute;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(ellipse at 50% 50%, transparent 0%, transparent 35%, rgba(100,50,200,0.03) 40%, rgba(255,100,50,0.02) 45%, transparent 50%, rgba(50,100,255,0.015) 55%, transparent 60%, rgba(200,50,255,0.01) 65%, transparent 70%);
+            animation: accretionSpin 8s linear infinite;
+            transform-origin: center center;
         }
 
-        @keyframes gateStars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-50%); }
+        /* İkinci akresyon katmanı - yatık elips */
+        #gate::after {
+            content: "";
+            position: absolute;
+            width: 150%; height: 150%;
+            top: -25%; left: -25%;
+            background: 
+                repeating-conic-gradient(
+                    from 0deg at 50% 50%,
+                    rgba(255,150,50,0.01) 0deg,
+                    transparent 5deg,
+                    rgba(50,150,255,0.008) 10deg,
+                    transparent 15deg,
+                    rgba(200,50,255,0.006) 20deg,
+                    transparent 30deg,
+                    rgba(255,200,50,0.004) 40deg,
+                    transparent 50deg
+                );
+            animation: accretionReverse 10s linear infinite;
+            transform: rotateX(75deg);
+            filter: blur(3px);
+            mix-blend-mode: screen;
+        }
+
+        @keyframes accretionSpin {
+            from { transform: rotate(0deg) scale(1.5); }
+            to { transform: rotate(360deg) scale(1.5); }
+        }
+
+        @keyframes accretionReverse {
+            from { transform: rotateX(75deg) rotate(360deg) scale(1.8); }
+            to { transform: rotateX(75deg) rotate(0deg) scale(1.8); }
         }
 
         #gate p { 
             position: relative; z-index: 1001;
-            letter-spacing: 10px; font-size: 0.75rem; color: #fff; 
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            animation: blinkGlow 3s ease-in-out infinite; 
+            letter-spacing: 12px; font-size: 0.7rem; color: rgba(255,255,255,0.6); 
+            text-shadow: 0 0 20px rgba(100,150,255,0.3), 0 0 40px rgba(100,100,255,0.1);
+            animation: portalPulse 2.5s ease-in-out infinite; 
             font-family: 'Cinzel', serif;
+            background: rgba(0,0,0,0.3);
+            padding: 20px 40px;
+            border: 0.5px solid rgba(255,255,255,0.08);
+            border-radius: 50%;
+            backdrop-filter: blur(2px);
+            width: 200px; height: 200px;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            transition: all 0.5s;
         }
 
-        @keyframes blinkGlow { 
+        #gate p:hover {
+            border-color: rgba(255,255,255,0.2);
+            text-shadow: 0 0 30px rgba(150,200,255,0.5), 0 0 60px rgba(100,100,255,0.2);
+            transform: scale(1.03);
+        }
+
+        @keyframes portalPulse { 
             0%, 100% { opacity: 0.3; transform: scale(0.98); } 
             50% { opacity: 1; transform: scale(1.02); } 
         }
 
-        .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; }
+        /* ========== ANA MENÜ: 3D GALAKSİ EVRENİ ========== */
+
+        /* Dev galaksi arkaplanı */
+        .ui-wrapper {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        /* Galaksi toz bulutu katmanı */
+        .ui-wrapper::after {
+            content: "";
+            position: absolute;
+            width: 200%; height: 200%;
+            top: -50%; left: -50%;
+            background: 
+                radial-gradient(ellipse at 30% 40%, rgba(100,50,150,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(50,100,200,0.03) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, rgba(150,100,200,0.02) 0%, transparent 60%);
+            animation: nebulaDrift 30s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes nebulaDrift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, -1%) scale(1.05); }
+            100% { transform: translate(2%, 1%) scale(0.95); }
+        }
+
+        /* ========== 3D SATÜRN GEZEGENİ ========== */
+        .saturn-container {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 400px; height: 400px;
+            transform: translate(-50%, -50%) translateZ(-200px) rotateX(20deg);
+            transform-style: preserve-3d;
+            z-index: 1;
+            pointer-events: none;
+            animation: saturnOrbit 40s linear infinite;
+        }
+
+        /* Satürn'ün kendisi */
+        .saturn-container::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 120px; height: 120px;
+            transform: translate(-50%, -50%);
+            background: 
+                radial-gradient(ellipse at 40% 40%, #e8d5a3 0%, #c4a96a 20%, #a8894a 40%, #8a6e3a 60%, #5c4a2a 80%, #2a1f10 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 40px rgba(200,170,100,0.3),
+                inset -20px -10px 30px rgba(0,0,0,0.4),
+                inset 10px 10px 20px rgba(255,200,100,0.1);
+            z-index: 2;
+        }
+
+        /* Satürn'ün atmosfer bantları */
+        .saturn-container::before {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0px,
+                    rgba(200,170,100,0.1) 3px,
+                    transparent 6px,
+                    rgba(150,130,80,0.08) 9px,
+                    transparent 12px,
+                    rgba(200,180,120,0.06) 15px,
+                    transparent 18px
+                ),
+                radial-gradient(ellipse at 40% 40%, #e8d5a3 0%, #c4a96a 20%, #a8894a 40%, #8a6e3a 60%, #5c4a2a 80%, #2a1f10 100%);
+            animation: saturnRotate 12s linear infinite;
+        }
+
+        @keyframes saturnRotate {
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(360deg); }
+        }
+
+        /* Satürn halkaları - dış */
+        .saturn-rings {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 320px; height: 100px;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            transform-style: preserve-3d;
+            z-index: 1;
+            animation: ringSpin 15s linear infinite;
+        }
+
+        .saturn-rings::before {
+            content: "";
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: 
+                conic-gradient(
+                    from 0deg,
+                    rgba(200,180,150,0.15) 0deg,
+                    rgba(180,160,130,0.05) 60deg,
+                    rgba(220,200,170,0.1) 120deg,
+                    rgba(160,140,110,0.03) 180deg,
+                    rgba(200,180,150,0.12) 240deg,
+                    rgba(180,160,130,0.04) 300deg,
+                    rgba(200,180,150,0.15) 360deg
+                ),
+                radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(200,180,150,0.08) 40%, transparent 45%, rgba(180,160,130,0.06) 55%, transparent 60%, rgba(200,180,150,0.04) 70%, transparent 75%, rgba(180,160,130,0.02) 85%, transparent 90%);
+            box-shadow: 
+                0 0 30px rgba(200,170,100,0.1),
+                inset 0 0 20px rgba(200,170,100,0.05);
+            animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes ringSpin {
+            from { transform: translate(-50%, -50%) rotateX(75deg) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(75deg) rotate(360deg); }
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Satürn'ün yörüngesel dönüşü */
+        @keyframes saturnOrbit {
+            0% { transform: translate(-50%, -50%) translateZ(-200px) rotateX(20deg) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) translateZ(-200px) rotateX(20deg) rotate(360deg); }
+        }
+
+        /* Header - ön planda */
+        .header-section { 
+            display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; 
+            position: relative; z-index: 5;
+            transform: translateZ(50px);
+        }
         
-        .profile-container { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .profile-container { 
+            display: flex; align-items: center; gap: 12px; margin-bottom: 15px;
+            position: relative;
+        }
 
         .profile-img { 
             width: 55px; height: 55px; border-radius: 50%; 
             border: 1px solid rgba(255, 255, 255, 0.3); object-fit: cover;
             background: url('https://i.ibb.co/mCMN0HHB/MG-0363.jpg') center/cover;
+            position: relative;
+            box-shadow: 
+                0 0 15px rgba(100,150,255,0.2),
+                inset 0 0 15px rgba(255,255,255,0.05);
+            animation: profileGlitch 4s ease-in-out infinite;
         }
 
-        .creator-text { font-size: 0.65rem; letter-spacing: 2px; color: rgba(255, 255, 255, 0.4); text-transform: lowercase; }
+        @keyframes profileGlitch {
+            0%, 90%, 100% { filter: none; transform: translate(0); }
+            92% { filter: hue-rotate(90deg); transform: translate(2px, -1px); }
+            94% { filter: hue-rotate(-90deg); transform: translate(-2px, 1px); }
+            96% { filter: hue-rotate(45deg); transform: translate(0); }
+        }
+
+        .profile-img::after {
+            content: "";
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, transparent 40%, rgba(100,150,255,0.1) 50%, transparent 60%);
+            animation: lensFlare 3s linear infinite;
+        }
+
+        @keyframes lensFlare {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .creator-text { 
+            font-size: 0.65rem; letter-spacing: 2px; color: rgba(255, 255, 255, 0.4); text-transform: lowercase;
+            background: rgba(255,255,255,0.03);
+            padding: 4px 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+            border-left: 1px solid rgba(100,150,255,0.15);
+            border-right: 1px solid rgba(200,0,255,0.15);
+        }
 
         h1 {
             font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 12px; margin: 0;
             background: linear-gradient(to right, #444 0%, #fff 50%, #444 100%);
             background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: shimmer 6s linear infinite;
+            position: relative;
+        }
+
+        h1::before {
+            content: "";
+            position: absolute; top: 50%; left: 50%;
+            width: 120%; height: 120%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse at center, rgba(100,150,255,0.03) 0%, transparent 70%);
+            filter: blur(20px);
+            animation: haloPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes haloPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         @keyframes shimmer { to { background-position: 200% center; } }
 
-        .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
-
-        .icon-box {
-            width: 80px; height: 80px; background: rgba(255, 255, 255, 0.05);
-            border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
-            display: flex; align-items: center; justify-content: center;
-            backdrop-filter: blur(10px); transition: 0.4s;
+        /* ========== İKON GRİD: YILDIZLAR ARASI KRİSTALLER ========== */
+        .icon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 40px;
+            perspective: 1200px;
+            transform: translateZ(80px);
+            z-index: 5;
+            position: relative;
         }
 
-        .icon-box img { width: 35px; height: 35px; }
+        .icon-box {
+            width: 80px; height: 80px; 
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.5px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 24px;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px); 
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
 
-        .track-name { margin-top: 60px; font-size: 0.6rem; letter-spacing: 4px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; }
+        .icon-box::before {
+            content: "";
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(
+                from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(100,150,255,0.02) 90deg,
+                transparent 180deg,
+                rgba(200,0,255,0.02) 270deg,
+                transparent 360deg
+            );
+            animation: crystalShine 6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .icon-box:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes crystalShine {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .icon-box:nth-child(1) { animation: floatBox1 7s ease-in-out infinite; }
+        .icon-box:nth-child(2) { animation: floatBox2 8s ease-in-out infinite; }
+        .icon-box:nth-child(3) { animation: floatBox3 9s ease-in-out infinite; }
+        .icon-box:nth-child(4) { animation: floatBox4 6s ease-in-out infinite; }
+
+        @keyframes floatBox1 {
+            0%, 100% { transform: translateY(0) rotateY(0deg) rotateX(0deg) translateZ(0); }
+            25% { transform: translateY(-8px) rotateY(10deg) rotateX(3deg) translateZ(15px); }
+            50% { transform: translateY(3px) rotateY(-5deg) rotateX(-2deg) translateZ(5px); }
+            75% { transform: translateY(-4px) rotateY(5deg) rotateX(5deg) translateZ(10px); }
+        }
+
+        @keyframes floatBox2 {
+            0%, 100% { transform: translateY(0) rotateY(0deg) rotateX(0deg) translateZ(0); }
+            25% { transform: translateY(-5px) rotateY(-8deg) rotateX(-3deg) translateZ(-10px); }
+            50% { transform: translateY(6px) rotateY(12deg) rotateX(2deg) translateZ(5px); }
+            75% { transform: translateY(-3px) rotateY(-3deg) rotateX(-4deg) translateZ(-5px); }
+        }
+
+        @keyframes floatBox3 {
+            0%, 100% { transform: translateY(0) rotateY(0deg) rotateX(0deg) translateZ(0); }
+            25% { transform: translateY(5px) rotateY(8deg) rotateX(-5deg) translateZ(12px); }
+            50% { transform: translateY(-7px) rotateY(-10deg) rotateX(3deg) translateZ(-8px); }
+            75% { transform: translateY(2px) rotateY(5deg) rotateX(-2deg) translateZ(7px); }
+        }
+
+        @keyframes floatBox4 {
+            0%, 100% { transform: translateY(0) rotateY(0deg) rotateX(0deg) translateZ(0); }
+            25% { transform: translateY(-6px) rotateY(-12deg) rotateX(4deg) translateZ(-15px); }
+            50% { transform: translateY(4px) rotateY(8deg) rotateX(-3deg) translateZ(8px); }
+            75% { transform: translateY(-2px) rotateY(-5deg) rotateX(5deg) translateZ(-10px); }
+        }
+
+        .icon-box:hover {
+            transform: scale(1.2) rotateY(180deg) translateZ(30px) !important;
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 
+                0 0 30px rgba(100,150,255,0.15),
+                0 0 60px rgba(100,150,255,0.05),
+                inset 0 0 20px rgba(255,255,255,0.05);
+        }
+
+        .icon-box img { 
+            width: 35px; height: 35px; 
+            transition: all 0.5s;
+            filter: invert(0.8) brightness(1.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        .icon-box:hover img {
+            filter: invert(1) brightness(2);
+            transform: scale(0.8) rotateY(-180deg);
+        }
+
+        .track-name { 
+            margin-top: 60px; 
+            font-size: 0.6rem; 
+            letter-spacing: 6px; 
+            color: rgba(255, 255, 255, 0.4); 
+            text-transform: uppercase;
+            position: relative;
+            background: rgba(255,255,255,0.02);
+            padding: 8px 24px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 0.5px solid rgba(255,255,255,0.03);
+            overflow: hidden;
+            z-index: 5;
+            transform: translateZ(30px);
+        }
+
+        .track-name::before {
+            content: "";
+            position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: streak 4s ease-in-out infinite;
+        }
+
+        @keyframes streak {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        /* Holografik tarama çizgisi */
+        .ui-wrapper::before {
+            content: "";
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                rgba(255,255,255,0.005) 1px,
+                transparent 2px,
+                rgba(100,150,255,0.003) 3px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 0;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100px; }
+        }
+
+        /* Yıldız kayması efekti */
+        .shooting-star {
+            position: fixed;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 2px rgba(255,255,255,0.3);
+            z-index: 0;
+            animation: shoot 3s linear infinite;
+            pointer-events: none;
+        }
+
+        .shooting-star:nth-child(1) { top: 10%; left: 80%; animation-delay: 0s; animation-duration: 2.5s; }
+        .shooting-star:nth-child(2) { top: 30%; left: 90%; animation-delay: 1.5s; animation-duration: 3.2s; }
+        .shooting-star:nth-child(3) { top: 60%; left: 70%; animation-delay: 3s; animation-duration: 2.8s; }
+        .shooting-star:nth-child(4) { top: 20%; left: 95%; animation-delay: 4.5s; animation-duration: 3.5s; }
+        .shooting-star:nth-child(5) { top: 50%; left: 85%; animation-delay: 6s; animation-duration: 2.2s; }
+        .shooting-star:nth-child(6) { top: 70%; left: 75%; animation-delay: 7.5s; animation-duration: 3.8s; }
+
+        @keyframes shoot {
+            0% { transform: translate(0, 0); opacity: 1; width: 2px; height: 2px; }
+            20% { opacity: 1; }
+            70% { opacity: 0.5; }
+            100% { transform: translate(-300px, 150px); opacity: 0; width: 0; height: 0; }
+        }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 1.6rem; letter-spacing: 8px; }
+            .icon-grid { gap: 25px; }
+            .icon-box { width: 65px; height: 65px; }
+            .icon-box img { width: 28px; height: 28px; }
+            #gate p { width: 150px; height: 150px; font-size: 0.55rem; }
+            .saturn-container { width: 250px; height: 250px; }
+            .saturn-container::before { width: 80px; height: 80px; }
+            .saturn-rings { width: 220px; height: 70px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="stars-container"></div>
-    <div class="visitor-counter">Views: <span id="view-count">0</span></div>
+    <div class="visitor-counter">✦&ensp;Views: <span id="view-count">0</span></div>
+
+    <!-- Yıldız kaymaları -->
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
 
     <div id="gate" onclick="startApp()">
         <p>ENTER THE STARS</p>
@@ -132,6 +556,12 @@
     </audio>
 
     <div class="ui-wrapper" id="ui">
+        
+        <!-- 3D Satürn Gezegeni - yavaşça dönüyor -->
+        <div class="saturn-container">
+            <div class="saturn-rings"></div>
+        </div>
+
         <div class="header-section">
             <div class="profile-container">
                 <div class="profile-img"></div>
