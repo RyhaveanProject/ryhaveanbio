@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYHAVEAN | STARGAZING</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;300;400&display=swap');
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            color: white; font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        }
+
+        .stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 250px 250px;
+            animation: starsMove 100s linear infinite; opacity: 0.5;
+        }
+
+        @keyframes starsMove { from { background-position: 0 0; } to { background-position: 0 -10000px; } }
+
+        .visitor-counter {
+            position: fixed; top: 20px; right: 20px; font-size: 0.55rem;
+            letter-spacing: 2px; color: rgba(255, 255, 255, 0.3); z-index: 100;
+        }
+
+        .ui-wrapper {
+            position: relative; z-index: 10; height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(1.05);
+            transition: all 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ui-wrapper.active { opacity: 1; transform: scale(1); }
+
+        .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; }
+        
+        .profile-container { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+
+        .profile-img { 
+            width: 55px; height: 55px; border-radius: 50%; 
+            border: 1px solid rgba(255, 255, 255, 0.3); object-fit: cover;
+            /* Yeni şəklin linki buraya əlavə edildi */
+            background: url('https://i.ibb.co/mCMN0HHB/MG-0363.jpg') center/cover;
+        }
+
+        .creator-text { font-size: 0.65rem; letter-spacing: 2px; color: rgba(255, 255, 255, 0.4); text-transform: lowercase; }
+
+        h1 {
+            font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 12px; margin: 0;
+            background: linear-gradient(to right, #444 0%, #fff 50%, #444 100%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shimmer 6s linear infinite;
+        }
+
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+
+        .icon-box {
+            width: 80px; height: 80px; background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px); transition: 0.4s;
+        }
+
+        .icon-box img { width: 35px; height: 35px; }
+
+        .track-name { margin-top: 60px; font-size: 0.6rem; letter-spacing: 4px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; }
+
+        #gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 1000; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 2s;
+        }
+
+        #gate p { letter-spacing: 6px; font-size: 0.7rem; color: #666; animation: blink 2s infinite; }
+        @keyframes blink { 50% { opacity: 0.3; } }
+    </style>
+</head>
+<body>
+
+    <div class="stars-container"></div>
+    <div class="visitor-counter">Views: <span id="view-count">0</span></div>
+
+    <div id="gate" onclick="startApp()">
+        <p>ENTER THE STARS</p>
+    </div>
+
+    <audio id="main-audio" preload="auto" loop crossorigin="anonymous">
+       <source src="Xxx.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="ui-wrapper" id="ui">
+        <div class="header-section">
+            <div class="profile-container">
+                <div class="profile-img"></div>
+                <span class="creator-text">creator @Ryhavean <\> </span>
+            </div>
+            <h1>RYHAVEAN</h1>
+        </div>
+        
+        <div class="icon-grid">
+            <a href="https://t.me/rveanx" target="_blank"><div class="icon-box"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" style="filter: invert(1);"></div></a>
+            <a href="https://instagram.com/" target="_blank"><div class="icon-box"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png"></div></a>
+            <a href="https://www.tiktok.com/@user9382928671" target="_blank"><div class="icon-box"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" style="filter: invert(1);"></div></a>
+            <a href="https://discord.com/users/Ryhavean" target="_blank"><div class="icon-box"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png"></div></a>
+        </div>
+
+        <div class="track-name">la fiducia Uccide ¿!</div>
+    </div>
+
+    <script>
+        function updateCounter() {
+            let count = localStorage.getItem('page_view') || 0;
+            count = Number(count) + 1;
+            localStorage.setItem('page_view', count);
+            document.getElementById('view-count').innerHTML = count;
+        }
+        window.onload = updateCounter;
+
+        function startApp() {
+            const audio = document.getElementById("main-audio");
+            audio.load();
+            audio.volume = 1.0;
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("Mahnı başladı");
+                }).catch(error => {
+                    console.log("Brauzer blokladı, yenidən cəhd edilir");
+                    audio.play();
+                });
+            }
+
+            document.getElementById("gate").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("gate").style.display = "none";
+                document.getElementById("ui").classList.add("active");
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
